@@ -13,3 +13,6 @@ shape = SubResource("CircleShape2D_13rxs")
 
 [node name="ShipShape" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(26, 0, -18, -14, -10, 0, -18, 14)
+
+[node name="FireCooldownTimer" type="Timer" parent="."]
+one_shot = true

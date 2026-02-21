@@ -10,7 +10,7 @@ radius = 2.0
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_koaes"]
 gradient = SubResource("Gradient_vu8dp")
 
-[node name="Projectile" type="Area2D"]
+[node name="Projectile" type="Area2D" groups=["projectile"]]
 script = ExtResource("1_x2bjp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -10,7 +10,7 @@ func _on_body_entered(body):
 	pass  # Not needed yet
 
 func _on_area_entered(area):
-	if area.name == "Projectile":
+	if area.is_in_group("projectile"):
 		area.queue_free()
 		destroyed.emit()
 		queue_free()
