@@ -1,0 +1,14 @@
+[gd_scene load_steps=5 format=3 uid="uid://khxciokpnn4i"]
+
+[ext_resource type="PackedScene" uid="uid://tuarrcu60k8f" path="res://scenes/ships/ship.tscn" id="1_1ars5"]
+[ext_resource type="Script" path="res://scenes/arena.gd" id="1_bfjdy"]
+[ext_resource type="PackedScene" uid="uid://dlbyueipv6x68" path="res://asteroids/asteroid.tscn" id="2_8wyhi"]
+[ext_resource type="PackedScene" uid="uid://ct3edo70w38iu" path="res://projectiles/Projectile.tscn" id="2_q0diq"]
+
+[node name="Arena" type="Node2D"]
+script = ExtResource("1_bfjdy")
+asteroid_scene = ExtResource("2_8wyhi")
+
+[node name="PlayerShip" parent="." instance=ExtResource("1_1ars5")]
+position = Vector2(300, 400)
+projectile_scene = ExtResource("2_q0diq")
