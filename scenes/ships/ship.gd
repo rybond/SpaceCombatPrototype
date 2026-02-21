@@ -14,29 +14,20 @@ func _ready():
 	$FireCooldownTimer.timeout.connect(_on_fire_cooldown_timeout)
 
 func _physics_process(delta):
-	handle_rotation(delta)
-	handle_thrust(delta)
-	handle_fire()
 	apply_drag()
 	limit_speed()
 	move_and_slide()
 	handle_screen_wrap()
 
-func handle_rotation(delta):
-	var rotation_input = 0.0
-	if Input.is_action_pressed("ui_left"):
-		rotation_input -= 1.0
-	if Input.is_action_pressed("ui_right"):
-		rotation_input += 1.0
-	rotation += rotation_input * rotation_speed * delta
+func apply_thrust(delta):
+	var forward = Vector2.RIGHT.rotated(rotation)
+	velocity += forward * thrust_force * delta
 
-func handle_thrust(delta):
-	if Input.is_action_pressed("ui_up"):
-		var forward = Vector2.RIGHT.rotated(rotation)
-		velocity += forward * thrust_force * delta
+func apply_rotation(direction: float, delta: float):
+	rotation += direction * rotation_speed * delta
 
-func handle_fire():
-	if Input.is_action_pressed("fire") and can_fire:
+func try_fire():
+	if can_fire:
 		fire()
 
 func fire():
