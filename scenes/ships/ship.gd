@@ -1,11 +1,11 @@
 extends CharacterBody2D
 
-@export var thrust_force: float = 1800.0
+@export var thrust_force: float = 400.0
 @export var rotation_speed: float = 3.0
-@export var max_speed: float = 600.0
-@export var drag: float = 1
+@export var max_speed: float = 400.0
+@export var drag: float = .98
 @export var projectile_scene: PackedScene
-@export var fire_cooldown: float = .25
+@export var fire_cooldown: float = .15
 
 var can_fire := true
 
