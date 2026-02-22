@@ -10,8 +10,11 @@ signal destroyed
 var velocity: Vector2 = Vector2.ZERO
 var rotation_speed: float = 0.0
 
+@onready var health_component: HealthComponent = $HealthComponent
+
 func _ready():
 	area_entered.connect(_on_area_entered)
+	health_component.died.connect(_on_died)
 	var direction = Vector2.RIGHT.rotated(randf_range(0.0, TAU))
 	var speed = randf_range(min_speed, max_speed)
 	velocity = direction * speed
@@ -38,5 +41,8 @@ func handle_screen_wrap():
 func _on_area_entered(area):
 	if area.is_in_group("projectile"):
 		area.queue_free()
-		destroyed.emit()
-		queue_free()
+		health_component.take_damage(1)
+
+func _on_died():
+	destroyed.emit()
+	queue_free()
