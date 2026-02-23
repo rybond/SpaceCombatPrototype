@@ -57,9 +57,9 @@ func spawn_jumbo():
 		3: spawn_pos = Vector2(screen_size.x, randf_range(0, screen_size.y))
 	asteroid.position = spawn_pos
 	add_child(asteroid)
-	asteroid.arena = self  # AFTER add_child so _ready() has already run
 	register_asteroid(asteroid)
 
+# Called by arena (for initial/respawn) AND by asteroid_base.gd (for split children)
 func register_asteroid(asteroid: Node):
 	active_asteroids += 1
 	asteroid.destroyed.connect(_on_asteroid_destroyed)

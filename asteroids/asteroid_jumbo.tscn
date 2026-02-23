@@ -1,28 +1,17 @@
 [gd_scene load_steps=3 format=3 uid="uid://dohd8ju5jy6yr"]
 
+[ext_resource type="Script" path="res://asteroids/asteroid_jumbo.gd" id="1_sn3dk"]
 [ext_resource type="PackedScene" uid="uid://cu6crjy8lfq5m" path="res://asteroids/asteroid_large.tscn" id="2_uv52p"]
-
-[sub_resource type="GDScript" id="GDScript_hkodc"]
-script/source = "extends AsteroidBase
-
-func _ready():
-	max_health = 4
-	min_speed = 40.0
-	max_speed = 80.0
-	min_spin = 0.2
-	max_spin = 0.8
-	num_children_min = 2
-	num_children_max = 3
-	super._ready()
-"
 
 [node name="asteroid_jumbo" type="RigidBody2D"]
 gravity_scale = 0.0
-script = SubResource("GDScript_hkodc")
+script = ExtResource("1_sn3dk")
 child_scene = ExtResource("2_uv52p")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+scale = Vector2(5, 5)
 polygon = PackedVector2Array(19, -14, 19, -9, 21, -7, 18, -3, 14, 7, 13, 7, 12, 9, 10, 9, 10, 11, -2, 10, -8, 9, -11, 6, -7, 3, -9, 0, -10, -7, -9, -13, -3, -12, 1, -15, 2, -15, 4, -17, 5, -15, 8, -15, 8, -19, 11, -15)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(5, 5)
 polygon = PackedVector2Array(-9, -13, -3, -12, 1, -15, 2, -15, 4, -17, 5, -15, 8, -15, 8, -19, 11, -15, 19, -14, 19, -9, 21, -7, 18, -3, 14, 7, 13, 7, 12, 9, 10, 9, 10, 11, 0, 10, -8, 9, -11, 6, -7, 3, -9, 0, -10, -7)
