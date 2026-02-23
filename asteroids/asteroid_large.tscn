@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://cu6crjy8lfq5m"]
+
+[ext_resource type="PackedScene" uid="uid://bboqr2wm4moh0" path="res://asteroids/asteroid_medium.tscn" id="2_rmtoi"]
+
+[sub_resource type="GDScript" id="GDScript_aovwk"]
+script/source = "extends AsteroidBase
+
+func _ready():
+	max_health = 3
+	min_speed = 70.0
+	max_speed = 130.0
+	min_spin = 0.4
+	max_spin = 1.2
+	num_children_min = 2
+	num_children_max = 3
+	super._ready()
+"
+
+[node name="asteroid_large" type="RigidBody2D"]
+gravity_scale = 0.0
+script = SubResource("GDScript_aovwk")
+child_scene = ExtResource("2_rmtoi")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(1, 0)
+polygon = PackedVector2Array(-9, -39, 1, -40, 9, -31, 14, -13, 13, 5, 22, 10, 16, 12, 9, 23, -2, 39, -14, 43, -14, 28, -19, 16, -12, 5, -15, -25)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(22, 9, 14, 5, 15, -11, 10, -31, 1, -41, -8, -39, -14, -26, -11, 3, -18, 16, -13, 28, -13, 42, -1, 39, 17, 12)

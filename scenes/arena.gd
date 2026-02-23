@@ -8,15 +8,16 @@ const STAR_COLORS = [
 ]
 
 var stars = []
-var current_asteroid: Node = null
+var active_asteroids: int = 0
 
-@export var asteroid_scene: PackedScene
+@export var jumbo_scene: PackedScene
+@export var initial_jumbo_count: int = 5
 
 func _ready():
 	RenderingServer.set_default_clear_color(Color.BLACK)
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 	_generate_stars()
-	spawn_asteroid()
+	spawn_initial_wave()
 
 func _generate_stars():
 	stars.clear()
@@ -38,10 +39,14 @@ func _draw():
 	for star in stars:
 		draw_circle(star.pos, star.size, star.color)
 
-func spawn_asteroid():
-	if asteroid_scene == null:
+func spawn_initial_wave():
+	for i in range(initial_jumbo_count):
+		spawn_jumbo()
+
+func spawn_jumbo():
+	if jumbo_scene == null:
 		return
-	var asteroid = asteroid_scene.instantiate()
+	var asteroid = jumbo_scene.instantiate()
 	var screen_size = get_viewport_rect().size
 	var edge = randi() % 4
 	var spawn_pos = Vector2.ZERO
@@ -52,8 +57,15 @@ func spawn_asteroid():
 		3: spawn_pos = Vector2(screen_size.x, randf_range(0, screen_size.y))
 	asteroid.position = spawn_pos
 	add_child(asteroid)
-	current_asteroid = asteroid
+	asteroid.arena = self  # AFTER add_child so _ready() has already run
+	register_asteroid(asteroid)
+
+func register_asteroid(asteroid: Node):
+	active_asteroids += 1
 	asteroid.destroyed.connect(_on_asteroid_destroyed)
 
 func _on_asteroid_destroyed():
-	spawn_asteroid()
+	active_asteroids -= 1
+	if active_asteroids <= 0:
+		await get_tree().create_timer(1.5).timeout
+		spawn_jumbo()
