@@ -16,11 +16,14 @@ var current_health: int
 var split_angle_spread: float = 0.6
 var _dead: bool = false
 
+@onready var screensize: Vector2 = get_viewport_rect().size
+
 func _ready():
 	current_health = max_health
-	contact_monitor = false
+	contact_monitor = true
+	max_contacts_reported = 4
 	linear_damp = 0.0
-	angular_damp = 0.0
+	angular_damp = 0.0  # NEW: Zero spin decay
 	var direction = Vector2.RIGHT.rotated(randf_range(0.0, TAU))
 	var speed = randf_range(min_speed, max_speed)
 	linear_velocity = direction * speed
@@ -28,6 +31,14 @@ func _ready():
 	if randf() > 0.5:
 		spin *= -1.0
 	angular_velocity = spin
+
+func _integrate_forces(state: PhysicsDirectBodyState2D):  # NEW/REPLACED: Safe wrap
+	var xform = state.transform
+	xform.origin.x = wrapf(xform.origin.x, 0, screensize.x)
+	xform.origin.y = wrapf(xform.origin.y, 0, screensize.y)
+	state.transform = xform
+
+# REMOVE _physics_process & handle_screen_wrap() entirely!
 
 func take_damage(amount: int):
 	if _dead:
@@ -56,21 +67,6 @@ func _spawn_children():
 		var child_direction = Vector2.RIGHT.rotated(base_angle + spread)
 		child.global_position = global_position
 		arena.add_child(child)
-		# Set velocity AFTER add_child so _ready() doesn't overwrite it
 		var child_speed = randf_range(child.min_speed, child.max_speed)
 		child.linear_velocity = child_direction * child_speed
 		arena.register_asteroid(child)
-
-func _physics_process(_delta):
-	handle_screen_wrap()
-
-func handle_screen_wrap():
-	var screen_size = get_viewport_rect().size
-	if global_position.x > screen_size.x:
-		global_position.x = 0
-	elif global_position.x < 0:
-		global_position.x = screen_size.x
-	if global_position.y > screen_size.y:
-		global_position.y = 0
-	elif global_position.y < 0:
-		global_position.y = screen_size.y
