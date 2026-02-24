@@ -6,6 +6,8 @@
 [node name="asteroid_medium" type="RigidBody2D"]
 scale = Vector2(2, 2)
 gravity_scale = 0.0
+linear_damp_mode = 1
+angular_damp_mode = 1
 script = ExtResource("1_7y6qj")
 child_scene = ExtResource("2_hxqqu")
 

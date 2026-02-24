@@ -5,6 +5,8 @@
 
 [node name="asteroid_jumbo" type="RigidBody2D"]
 gravity_scale = 0.0
+linear_damp_mode = 1
+angular_damp_mode = 1
 script = ExtResource("1_sn3dk")
 child_scene = ExtResource("2_uv52p")
 
