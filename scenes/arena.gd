@@ -11,7 +11,7 @@ var stars = []
 var active_asteroids: int = 0
 
 @export var jumbo_scene: PackedScene
-@export var initial_jumbo_count: int = 5
+@export var initial_jumbo_count: int = 1
 
 func _ready():
 	RenderingServer.set_default_clear_color(Color.BLACK)

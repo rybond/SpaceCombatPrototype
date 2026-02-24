@@ -18,9 +18,9 @@ var _dead: bool = false
 
 func _ready():
 	current_health = max_health
-	contact_monitor = true
-	max_contacts_reported = 4
+	contact_monitor = false
 	linear_damp = 0.0
+	angular_damp = 0.0
 	var direction = Vector2.RIGHT.rotated(randf_range(0.0, TAU))
 	var speed = randf_range(min_speed, max_speed)
 	linear_velocity = direction * speed
@@ -54,10 +54,9 @@ func _spawn_children():
 		var base_angle = linear_velocity.angle() if linear_velocity.length() > 0.1 else randf_range(0, TAU)
 		var spread = randf_range(-split_angle_spread, split_angle_spread)
 		var child_direction = Vector2.RIGHT.rotated(base_angle + spread)
-		# Speed is set after _ready() runs via deferred call
 		child.global_position = global_position
 		arena.add_child(child)
-		# Override velocity AFTER add_child so _ready() doesn't clobber it
+		# Set velocity AFTER add_child so _ready() doesn't overwrite it
 		var child_speed = randf_range(child.min_speed, child.max_speed)
 		child.linear_velocity = child_direction * child_speed
 		arena.register_asteroid(child)
@@ -67,11 +66,11 @@ func _physics_process(_delta):
 
 func handle_screen_wrap():
 	var screen_size = get_viewport_rect().size
-	if position.x > screen_size.x:
-		position.x = 0
-	elif position.x < 0:
-		position.x = screen_size.x
-	if position.y > screen_size.y:
-		position.y = 0
-	elif position.y < 0:
-		position.y = screen_size.y
+	if global_position.x > screen_size.x:
+		global_position.x = 0
+	elif global_position.x < 0:
+		global_position.x = screen_size.x
+	if global_position.y > screen_size.y:
+		global_position.y = 0
+	elif global_position.y < 0:
+		global_position.y = screen_size.y
