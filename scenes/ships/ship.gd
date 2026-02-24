@@ -13,7 +13,7 @@ func _ready():
 	$FireCooldownTimer.wait_time = fire_cooldown
 	$FireCooldownTimer.timeout.connect(_on_fire_cooldown_timeout)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	apply_drag()
 	limit_speed()
 	move_and_slide()

@@ -11,8 +11,7 @@ var stars = []
 var active_asteroids: int = 0
 
 @export var jumbo_scene: PackedScene
-@export var initial_jumbo_count: int = 1  # Keep at 1 for single test
-@export var respawn_after_clear: bool = false  # NEW: Toggle to disable auto-respawn for testing
+@export var initial_jumbo_count: int = 1  # Start with 1 for steady testing
 
 func _ready():
 	RenderingServer.set_default_clear_color(Color.BLACK)
@@ -49,17 +48,25 @@ func spawn_jumbo():
 		return
 	var asteroid = jumbo_scene.instantiate()
 	var screen_size = get_viewport_rect().size
-	asteroid.position = screen_size * 0.5  # CHANGED: Center spawn (flies straight through!)
+	var edge = randi() % 4  # CHANGED BACK: Random edge spawn
+	var spawn_pos = Vector2.ZERO
+	match edge:
+		0: spawn_pos = Vector2(randf_range(0, screen_size.x), 0)  # Top
+		1: spawn_pos = Vector2(randf_range(0, screen_size.x), screen_size.y)  # Bottom
+		2: spawn_pos = Vector2(0, randf_range(0, screen_size.y))  # Left
+		3: spawn_pos = Vector2(screen_size.x, randf_range(0, screen_size.y))  # Right
+	asteroid.position = spawn_pos
 	add_child(asteroid)
 	register_asteroid(asteroid)
 
-# Called by arena (for initial/respawn) AND by asteroid_base.gd (for split children)
+# Called by arena AND by asteroid_base.gd (for split children)
 func register_asteroid(asteroid: Node):
 	active_asteroids += 1
 	asteroid.destroyed.connect(_on_asteroid_destroyed)
 
 func _on_asteroid_destroyed():
 	active_asteroids -= 1
-	if active_asteroids <= 0 and respawn_after_clear:  # CHANGED: Respect toggle
+	if active_asteroids <= 0:
+		# REMOVED toggle: Always respawn new Jumbo after clear!
 		await get_tree().create_timer(1.5).timeout
 		spawn_jumbo()
