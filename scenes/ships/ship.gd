@@ -18,6 +18,8 @@ func _physics_process(_delta):
 	limit_speed()
 	move_and_slide()
 	handle_screen_wrap()
+	$Thruster.emitting = Input.is_action_pressed("ui_up")
+
 
 func apply_thrust(delta):
 	var forward = Vector2.RIGHT.rotated(rotation)
