@@ -1,7 +1,7 @@
 extends AsteroidBase
 
 func _ready():
-	max_health = 4
+	max_health = 20
 	min_speed = 40.0  # Tune higher (60-100) if still "slow"
 	max_speed = 80.0
 	min_spin = 0.2

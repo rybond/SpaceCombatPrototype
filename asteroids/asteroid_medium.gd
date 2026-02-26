@@ -1,7 +1,7 @@
 extends AsteroidBase
 
 func _ready():
-	max_health = 2
+	max_health = 5
 	min_speed = 100.0
 	max_speed = 180.0
 	min_spin = 0.6
