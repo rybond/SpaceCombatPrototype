@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var thrust_force: float = 400.0
 @export var rotation_speed: float = 3.0
 @export var max_speed: float = 400.0
-@export var drag: float = .98
+@export var drag: float = 1
 @export var projectile_scene: PackedScene
 @export var fire_cooldown: float = .15
 
@@ -35,6 +35,7 @@ func try_fire():
 func fire():
 	if projectile_scene == null:
 		return
+	$gun2sound.play()   # ← NEW LINE
 	can_fire = false
 	var projectile = projectile_scene.instantiate()
 	var forward = Vector2.RIGHT.rotated(rotation)

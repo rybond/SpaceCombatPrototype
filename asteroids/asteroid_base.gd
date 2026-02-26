@@ -31,6 +31,7 @@ func _ready():
 	if randf() > 0.5:
 		spin *= -1.0
 	angular_velocity = spin
+	$ExplosionSound.finished.connect($ExplosionSound.queue_free)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D):  # NEW/REPLACED: Safe wrap
 	var xform = state.transform
@@ -51,6 +52,9 @@ func take_damage(amount: int):
 func _do_die():
 	_spawn_children()
 	destroyed.emit()
+	var sound = $ExplosionSound
+	sound.reparent(get_tree().root)
+	sound.play()
 	queue_free()
 
 func _spawn_children():

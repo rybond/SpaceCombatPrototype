@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://tuarrcu60k8f"]
+[gd_scene load_steps=9 format=3 uid="uid://tuarrcu60k8f"]
 
 [ext_resource type="Script" path="res://scenes/ships/ship.gd" id="1_uby25"]
 [ext_resource type="Script" path="res://scenes/ships/PlayerController.gd" id="2_8bvab"]
 [ext_resource type="PackedScene" uid="uid://ct3edo70w38iu" path="res://projectiles/Projectile.tscn" id="2_xtfmq"]
+[ext_resource type="AudioStream" uid="uid://btjdlltqmsa1i" path="res://audio/gun2.wav" id="4_mtbhb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_13rxs"]
 radius = 20.0
@@ -49,3 +50,6 @@ rotation = 3.14159
 amount = 24
 process_material = SubResource("ParticleProcessMaterial_p74fi")
 lifetime = 0.6
+
+[node name="gun2sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_mtbhb")

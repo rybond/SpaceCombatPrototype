@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cu6crjy8lfq5m"]
+[gd_scene load_steps=4 format=3 uid="uid://cu6crjy8lfq5m"]
 
 [ext_resource type="Script" path="res://asteroids/asteroid_large.gd" id="1_8ldps"]
 [ext_resource type="PackedScene" uid="uid://bboqr2wm4moh0" path="res://asteroids/asteroid_medium.tscn" id="2_rmtoi"]
+[ext_resource type="AudioStream" uid="uid://cmmu70c7whjcp" path="res://audio/asteroid_large_destroyed.wav" id="3_p0n5j"]
 
 [node name="asteroid_large" type="RigidBody2D"]
 scale = Vector2(3, 3)
@@ -19,3 +20,6 @@ polygon = PackedVector2Array(-9, -39, 1, -40, 9, -31, 14, -13, 13, 5, 22, 10, 16
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 scale = Vector2(2, 2)
 polygon = PackedVector2Array(22, 9, 14, 5, 15, -11, 10, -31, 1, -41, -8, -39, -14, -26, -11, 3, -18, 16, -13, 28, -13, 42, -1, 39, 17, 12)
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_p0n5j")
