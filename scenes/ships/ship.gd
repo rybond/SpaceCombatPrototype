@@ -1,18 +1,16 @@
 extends CharacterBody2D
-
+@onready var health_component: HealthComponent = $HealthComponent
 @export var thrust_force: float = 400.0
 @export var rotation_speed: float = 3.0
 @export var max_speed: float = 400.0
 @export var drag: float = 1
 @export var projectile_scene: PackedScene
 @export var fire_cooldown: float = .05
-@export var max_health: int = 100
-var current_health: int
+
 
 var can_fire := true
 
 func _ready():
-	current_health = max_health
 	$FireCooldownTimer.wait_time = fire_cooldown
 	$FireCooldownTimer.timeout.connect(_on_fire_cooldown_timeout)
 
@@ -31,9 +29,6 @@ func _physics_process(_delta):
 			var impact_speed = relative_velocity.length()
 			var damage = int(impact_speed / 10)
 			damage = clamp(damage, 5, 50)
-			current_health -= damage
-			current_health = max(current_health, 0)
-			print("→ DAMAGE! ", damage, " HP left: ", current_health)
 			break  # only one hit per frame
 
 
@@ -81,8 +76,11 @@ func handle_screen_wrap():
 	elif position.y < 0:
 		position.y = screen_size.y
 
-func _process(delta):
-	var health_label = get_tree().root.get_node("Arena/HealthLabel")
-	if health_label:
-		health_label.text = "HP: " + str(current_health)
-		
+@warning_ignore("unused_parameter")
+
+func _on_health_changed(new_health: int, _max_health: int) -> void:
+	get_parent().get_node("HealthLabel").text = "HP: " + str(new_health)
+
+func _on_died() -> void:
+	# TODO: jumbo explosion + 2–3s delay → respawn
+	pass
