@@ -19,6 +19,7 @@ var rotation_speed: float = 0.0
 
 func _ready():
 	area_entered.connect(_on_area_entered)
+	body_entered.connect(_on_body_entered)
 	health_component.died.connect(_on_died)
 	var direction = Vector2.RIGHT.rotated(randf_range(0.0, TAU))
 	var speed = randf_range(min_speed, max_speed)
@@ -51,6 +52,12 @@ func _on_area_entered(area):
 func _on_died():
 	destroyed.emit()
 	queue_free()
+func _on_body_entered(body):
+	print(\"Asteroid hit body: \", body.name)  # debug — remove later
+	if body.has_node(\"HealthComponent\"):
+		body.get_node(\"HealthComponent\").take_damage(10)
+		
+
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_34t6b"]

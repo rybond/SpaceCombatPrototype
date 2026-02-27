@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://asteroids/asteroid_medium.gd" id="1_7y6qj"]
 [ext_resource type="PackedScene" uid="uid://bivfe8m3cinbm" path="res://asteroids/asteroid_small.tscn" id="2_hxqqu"]
-[ext_resource type="AudioStream" uid="uid://bptrrhefgep0y" path="res://audio/asteroid_medium_destroyed.wav" id="3_ojosq"]
+[ext_resource type="AudioStream" uid="uid://ctqc0mwvfm43g" path="res://audio/asteroid_medium_destroyed.wav" id="3_ojosq"]
 
 [node name="asteroid_medium" type="RigidBody2D"]
 scale = Vector2(2, 2)

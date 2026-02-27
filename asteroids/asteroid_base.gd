@@ -22,6 +22,7 @@ func _ready():
 	current_health = max_health
 	contact_monitor = true
 	max_contacts_reported = 4
+	body_entered.connect(_on_body_entered)
 	linear_damp = 0.0
 	angular_damp = 0.0  # NEW: Zero spin decay
 	var direction = Vector2.RIGHT.rotated(randf_range(0.0, TAU))
@@ -74,3 +75,6 @@ func _spawn_children():
 		var child_speed = randf_range(child.min_speed, child.max_speed)
 		child.linear_velocity = child_direction * child_speed
 		arena.register_asteroid(child)
+func _on_body_entered(body):
+	if body.has_node("HealthComponent"):
+		body.get_node("HealthComponent").take_damage(10)  # flat 10 for now; we'll tune later

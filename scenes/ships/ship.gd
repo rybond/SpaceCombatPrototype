@@ -1,5 +1,6 @@
 extends CharacterBody2D
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var respawn_timer: Timer = $RespawnTimer
 @export var thrust_force: float = 400.0
 @export var rotation_speed: float = 3.0
 @export var max_speed: float = 400.0
@@ -13,6 +14,7 @@ var can_fire := true
 func _ready():
 	$FireCooldownTimer.wait_time = fire_cooldown
 	$FireCooldownTimer.timeout.connect(_on_fire_cooldown_timeout)
+	respawn_timer.timeout.connect(_on_respawn_timer_timeout)
 
 func _physics_process(_delta):
 	apply_drag()
@@ -20,16 +22,7 @@ func _physics_process(_delta):
 	move_and_slide()
 	handle_screen_wrap()
 	$Thruster.emitting = Input.is_action_pressed("ui_up")
-	# Asteroid collision damage (proportional to impact speed)
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		var body = collision.get_collider()
-		if body and body.is_in_group("asteroids"):
-			var relative_velocity = velocity - body.linear_velocity  # FIXED for RigidBody2D
-			var impact_speed = relative_velocity.length()
-			var damage = int(impact_speed / 10)
-			damage = clamp(damage, 5, 50)
-			break  # only one hit per frame
+
 
 
 func apply_thrust(delta):
@@ -82,5 +75,16 @@ func _on_health_changed(new_health: int, _max_health: int) -> void:
 	get_parent().get_node("HealthLabel").text = "HP: " + str(new_health)
 
 func _on_died() -> void:
-	# TODO: jumbo explosion + 2–3s delay → respawn
-	pass
+	$ExplosionSound.play()
+	respawn_timer.start()
+	visible = false
+	set_physics_process(false)  # stop thrust/rotation while dead
+	# Next step: 2-3s delay + respawn at center
+func _on_respawn_timer_timeout() -> void:
+	var screen_size = get_viewport_rect().size
+	position = screen_size / 2
+	rotation = 0.0
+	velocity = Vector2.ZERO
+	health_component.current_health = health_component.max_health
+	visible = true
+	set_physics_process(true)
