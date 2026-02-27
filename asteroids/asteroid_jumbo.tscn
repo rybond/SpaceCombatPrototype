@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://asteroids/asteroid_jumbo.gd" id="1_sn3dk"]
 [ext_resource type="PackedScene" uid="uid://cu6crjy8lfq5m" path="res://asteroids/asteroid_large.tscn" id="2_uv52p"]
-[ext_resource type="AudioStream" uid="uid://ciusivjyx8bly" path="res://audio/asteroid_jumbo_destroyed.wav" id="3_wy8vc"]
+[ext_resource type="AudioStream" uid="uid://c42aj6htbwp0t" path="res://audio/asteroid_jumbo_destroyed.wav" id="3_wy8vc"]
 
 [node name="asteroid_jumbo" type="RigidBody2D" groups=["asteroids"]]
 gravity_scale = 0.0

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/ships/ship.gd" id="1_uby25"]
 [ext_resource type="Script" path="res://scenes/ships/PlayerController.gd" id="2_8bvab"]
 [ext_resource type="PackedScene" uid="uid://ct3edo70w38iu" path="res://projectiles/Projectile.tscn" id="2_xtfmq"]
-[ext_resource type="AudioStream" uid="uid://btjdlltqmsa1i" path="res://audio/gun2.wav" id="4_mtbhb"]
+[ext_resource type="AudioStream" uid="uid://bws0vcix371o8" path="res://audio/gun2.wav" id="4_mtbhb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_13rxs"]
 radius = 20.0
@@ -30,7 +30,6 @@ color_ramp = SubResource("GradientTexture1D_v3u3o")
 script = ExtResource("1_uby25")
 thrust_force = 1000.0
 projectile_scene = ExtResource("2_xtfmq")
-fire_cooldown = 0.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_13rxs")

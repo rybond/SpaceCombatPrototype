@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var max_speed: float = 400.0
 @export var drag: float = 1
 @export var projectile_scene: PackedScene
-@export var fire_cooldown: float = .15
+@export var fire_cooldown: float = .05
 @export var max_health: int = 100
 var current_health: int
 
