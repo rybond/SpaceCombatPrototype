@@ -14,6 +14,7 @@ child_scene = ExtResource("2_hxqqu")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 scale = Vector2(0.5, 0.5)
+color = Color(0.340339, 0.340339, 0.340339, 1)
 polygon = PackedVector2Array(-31, 42, 42, 47, 58, 5, 80, -11, 52, -49, 73, -67, 65, -83, 71, -99, 28, -132, -11, -94)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]

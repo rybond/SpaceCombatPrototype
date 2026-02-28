@@ -11,6 +11,9 @@ var stars = []
 var active_asteroids: int = 0
 
 @export var jumbo_scene: PackedScene
+@export var large_scene: PackedScene
+@export var medium_scene: PackedScene
+@export var small_scene: PackedScene
 @export var initial_jumbo_count: int = 1  # Start with 1 for steady testing
 
 func _ready():
@@ -41,25 +44,41 @@ func _draw():
 
 func spawn_initial_wave():
 	for i in range(initial_jumbo_count):
-		spawn_jumbo()
+		spawn_random_asteroid()
 
-func spawn_jumbo():
-	if jumbo_scene == null:
+func spawn_random_asteroid():
+	var asteroid_scene = get_random_asteroid_scene()
+	if asteroid_scene == null:
 		return
-	var asteroid = jumbo_scene.instantiate()
+	
+	var asteroid = asteroid_scene.instantiate()
+	
 	var screen_size = get_viewport_rect().size
-	var edge = randi() % 4  # CHANGED BACK: Random edge spawn
+	var edge = randi() % 4
 	var spawn_pos = Vector2.ZERO
 	match edge:
 		0: spawn_pos = Vector2(randf_range(0, screen_size.x), 0)  # Top
-		1: spawn_pos = Vector2(randf_range(0, screen_size.x), screen_size.y)  # Bottom
-		2: spawn_pos = Vector2(0, randf_range(0, screen_size.y))  # Left
-		3: spawn_pos = Vector2(screen_size.x, randf_range(0, screen_size.y))  # Right
+		1: spawn_pos = Vector2(randf_range(0, screen_size.x), screen_size.y) # Bottom
+		2: spawn_pos = Vector2(0, randf_range(0, screen_size.y)) # Left
+		3: spawn_pos = Vector2(screen_size.x, randf_range(0, screen_size.y)) # Right
+	
 	asteroid.position = spawn_pos
 	add_child(asteroid)
 	register_asteroid(asteroid)
 
-# Called by arena AND by asteroid_base.gd (for split children)
+func get_random_asteroid_scene() -> PackedScene:
+	var roll = randf()
+	if roll < 0.10:
+		return jumbo_scene
+	elif roll < 0.30:
+		return large_scene
+	elif roll < 0.60:
+		return medium_scene
+	else:
+		return small_scene
+
+
+
 func register_asteroid(asteroid: Node):
 	active_asteroids += 1
 	asteroid.destroyed.connect(_on_asteroid_destroyed)
@@ -69,4 +88,4 @@ func _on_asteroid_destroyed():
 	if active_asteroids <= 0:
 		# REMOVED toggle: Always respawn new Jumbo after clear!
 		await get_tree().create_timer(1.5).timeout
-		spawn_jumbo()
+		spawn_random_asteroid()
