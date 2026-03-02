@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://khxciokpnn4i"]
+[gd_scene load_steps=10 format=3 uid="uid://khxciokpnn4i"]
 
 [ext_resource type="PackedScene" uid="uid://tuarrcu60k8f" path="res://scenes/ships/ship.tscn" id="1_1ars5"]
 [ext_resource type="Script" path="res://scenes/arena.gd" id="1_muc4d"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://cu6crjy8lfq5m" path="res://asteroids/asteroid_large.tscn" id="3_dw7ex"]
 [ext_resource type="PackedScene" uid="uid://bboqr2wm4moh0" path="res://asteroids/asteroid_medium.tscn" id="4_qpw2d"]
 [ext_resource type="PackedScene" uid="uid://bivfe8m3cinbm" path="res://asteroids/asteroid_small.tscn" id="5_n2ybb"]
+[ext_resource type="PackedScene" uid="uid://c01qdgemigr4o" path="res://scenes/ships/enemy_ship.tscn" id="7_1u3jk"]
+[ext_resource type="Script" path="res://scenes/EnemyHealthLabel.gd" id="8_4gk0o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cgh0w"]
 font_size = 24
@@ -20,8 +22,25 @@ small_scene = ExtResource("5_n2ybb")
 [node name="PlayerShip" parent="." instance=ExtResource("1_1ars5")]
 position = Vector2(300, 400)
 
+[node name="EnemyShip" parent="." instance=ExtResource("7_1u3jk")]
+position = Vector2(753, 342)
+
 [node name="HealthLabel" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
 text = "HP:100"
 label_settings = SubResource("LabelSettings_cgh0w")
+
+[node name="EnemyHealthLabel" type="Label" parent="."]
+modulate = Color(0.487756, 1.02879e-06, 3.36915e-07, 1)
+offset_top = 41.0
+offset_right = 82.0
+offset_bottom = 75.0
+text = "HP:130"
+label_settings = SubResource("LabelSettings_cgh0w")
+script = ExtResource("8_4gk0o")
+
+[connection signal="health_changed" from="EnemyShip/HealthComponent" to="EnemyHealthLabel" method="_on_health_component_health_changed"]
+
+[editable path="PlayerShip"]
+[editable path="EnemyShip"]

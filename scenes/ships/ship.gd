@@ -7,6 +7,7 @@ extends CharacterBody2D
 @export var drag: float = 1
 @export var projectile_scene: PackedScene
 @export var fire_cooldown: float = .05
+@export var shot_damage: int = 1
 
 
 var can_fire := true
@@ -42,6 +43,7 @@ func fire():
 	$gun2sound.play()   # ← NEW LINE
 	can_fire = false
 	var projectile = projectile_scene.instantiate()
+	projectile.damage = shot_damage
 	var forward = Vector2.RIGHT.rotated(rotation)
 	projectile.direction = forward
 	projectile.global_position = global_position + forward * 30
