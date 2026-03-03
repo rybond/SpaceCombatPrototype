@@ -71,10 +71,7 @@ func handle_screen_wrap():
 	elif position.y < 0:
 		position.y = screen_size.y
 
-@warning_ignore("unused_parameter")
 
-func _on_health_changed(new_health: int, _max_health: int) -> void:
-	get_parent().get_node("HealthLabel").text = "HP: " + str(new_health)
 
 func _on_died() -> void:
 	$ExplosionSound.play()
