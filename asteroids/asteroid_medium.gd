@@ -10,4 +10,3 @@ func _ready():
 	num_children_min = 2
 	num_children_max = 3
 	linear_damp = 0.0
-
