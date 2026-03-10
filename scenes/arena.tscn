@@ -22,7 +22,8 @@ small_scene = ExtResource("5_n2ybb")
 [node name="Player1Ship" parent="." instance=ExtResource("1_1ars5")]
 position = Vector2(300, 400)
 
-[node name="PlayerController" parent="Player1Ship" index="3"]
+[node name="PlayerController" parent="Player1Ship" index="3" node_paths=PackedStringArray("target_ship")]
+target_ship = NodePath("../../Player2Ship")
 thrust_action = "p1_thrust"
 rotate_left_action = "p1_left"
 rotate_right_action = "p1_right"
@@ -50,7 +51,9 @@ position = Vector2(306, 168)
 [node name="ShipShape" parent="Player2Ship" index="1"]
 color = Color(0.486275, 0, 0, 1)
 
-[node name="PlayerController" parent="Player2Ship" index="3"]
+[node name="PlayerController" parent="Player2Ship" index="3" node_paths=PackedStringArray("target_ship")]
+control_type = 1
+target_ship = NodePath("../../Player1Ship")
 thrust_action = "p2_thrust"
 rotate_left_action = "p2_left"
 rotate_right_action = "p2_right"

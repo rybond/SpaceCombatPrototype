@@ -22,13 +22,14 @@ func _physics_process(_delta):
 	limit_speed()
 	move_and_slide()
 	handle_screen_wrap()
-	$Thruster.emitting = Input.is_action_pressed("ui_up")
+	$Thruster.emitting = false   # default off every frame
 
 
 
 func apply_thrust(delta):
 	var forward = Vector2.RIGHT.rotated(rotation)
 	velocity += forward * thrust_force * delta
+	$Thruster.emitting = true
 
 func apply_rotation(direction: float, delta: float):
 	rotation += direction * rotation_speed * delta
