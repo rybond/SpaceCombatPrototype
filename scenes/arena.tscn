@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://cu6crjy8lfq5m" path="res://asteroids/asteroid_large.tscn" id="3_dw7ex"]
 [ext_resource type="PackedScene" uid="uid://bboqr2wm4moh0" path="res://asteroids/asteroid_medium.tscn" id="4_qpw2d"]
 [ext_resource type="PackedScene" uid="uid://bivfe8m3cinbm" path="res://asteroids/asteroid_small.tscn" id="5_n2ybb"]
-[ext_resource type="Script" uid="uid://18ipkm5tomx1" path="res://scenes/EnemyHealthLabel.gd" id="8_4gk0o"]
 [ext_resource type="Script" uid="uid://cgjhyjx1ni61s" path="res://scenes/HealthLabel.gd" id="8_y3xwi"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_cgh0w"]
@@ -22,14 +21,20 @@ small_scene = ExtResource("5_n2ybb")
 [node name="Player1Ship" parent="." unique_id=999339947 instance=ExtResource("1_1ars5")]
 position = Vector2(300, 400)
 
-[node name="PlayerController" parent="Player1Ship" index="3" node_paths=PackedStringArray("target_ship")]
+[node name="ShipShape" parent="Player1Ship" index="1" unique_id=1630643339]
+color = Color(0.2, 0.4, 1, 1)
+
+[node name="PlayerController" parent="Player1Ship" index="3" unique_id=912866458 node_paths=PackedStringArray("target_ship")]
 target_ship = NodePath("../../Player2Ship")
+difficulty = 2
 thrust_action = "p1_thrust"
 rotate_left_action = "p1_left"
 rotate_right_action = "p1_right"
 fire_action = "p1_fire"
+fire_secondary_action = "p1_fire_secondary"
 
 [node name="HealthLabel" type="Label" parent="." unique_id=1562687284]
+modulate = Color(0.2, 0.4, 1, 1)
 offset_right = 40.0
 offset_bottom = 23.0
 text = "HP:100"
@@ -41,25 +46,27 @@ modulate = Color(0.487756, 1.02879e-06, 3.36915e-07, 1)
 offset_top = 41.0
 offset_right = 82.0
 offset_bottom = 75.0
-text = "HP:130"
+text = "HP:100"
 label_settings = SubResource("LabelSettings_cgh0w")
-script = ExtResource("8_4gk0o")
+script = ExtResource("8_y3xwi")
 
 [node name="Player2Ship" parent="." unique_id=2139731953 instance=ExtResource("1_1ars5")]
 position = Vector2(306, 168)
 
-[node name="ShipShape" parent="Player2Ship" index="1"]
+[node name="ShipShape" parent="Player2Ship" index="1" unique_id=1630643339]
 color = Color(0.486275, 0, 0, 1)
 
-[node name="PlayerController" parent="Player2Ship" index="3" node_paths=PackedStringArray("target_ship")]
-control_type = 1
+[node name="PlayerController" parent="Player2Ship" index="3" unique_id=912866458 node_paths=PackedStringArray("target_ship")]
 target_ship = NodePath("../../Player1Ship")
+difficulty = 2
 thrust_action = "p2_thrust"
 rotate_left_action = "p2_left"
 rotate_right_action = "p2_right"
 fire_action = "p2_fire"
+fire_secondary_action = "p2_fire_secondary"
 
 [connection signal="health_changed" from="Player1Ship/HealthComponent" to="HealthLabel" method="_on_health_component_health_changed"]
+[connection signal="health_changed" from="Player2Ship/HealthComponent" to="EnemyHealthLabel" method="_on_health_component_health_changed"]
 
 [editable path="Player1Ship"]
 [editable path="Player2Ship"]

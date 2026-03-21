@@ -16,8 +16,6 @@ var current_health: int
 var split_angle_spread: float = 0.6
 var _dead: bool = false
 
-@onready var screensize: Vector2 = get_viewport_rect().size
-
 func _ready():
 	current_health = max_health
 	contact_monitor = true
@@ -34,10 +32,11 @@ func _ready():
 	angular_velocity = spin
 	$ExplosionSound.finished.connect($ExplosionSound.queue_free)
 
-func _integrate_forces(state: PhysicsDirectBodyState2D):  # NEW/REPLACED: Safe wrap
+func _integrate_forces(state: PhysicsDirectBodyState2D):
+	var screen := get_viewport_rect().size
 	var xform = state.transform
-	xform.origin.x = wrapf(xform.origin.x, 0, screensize.x)
-	xform.origin.y = wrapf(xform.origin.y, 0, screensize.y)
+	xform.origin.x = wrapf(xform.origin.x, 0, screen.x)
+	xform.origin.y = wrapf(xform.origin.y, 0, screen.y)
 	state.transform = xform
 
 # REMOVE _physics_process & handle_screen_wrap() entirely!

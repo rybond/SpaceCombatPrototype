@@ -1,6 +1,8 @@
 extends CharacterBody2D
+
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var respawn_timer: Timer = $RespawnTimer
+
 @export var thrust_force: float = 400.0
 @export var rotation_speed: float = 3.0
 @export var max_speed: float = 400.0
@@ -8,23 +10,23 @@ extends CharacterBody2D
 @export var projectile_scene: PackedScene
 @export var fire_cooldown: float = .05
 @export var shot_damage: int = 1
-
+@export var missile_scene: PackedScene
 
 var can_fire := true
+var can_fire_missile := true
 
 func _ready():
 	$FireCooldownTimer.wait_time = fire_cooldown
 	$FireCooldownTimer.timeout.connect(_on_fire_cooldown_timeout)
 	respawn_timer.timeout.connect(_on_respawn_timer_timeout)
+	$MissileCooldownTimer.timeout.connect(_on_missile_cooldown_timeout)
 
 func _physics_process(_delta):
 	apply_drag()
 	limit_speed()
 	move_and_slide()
 	handle_screen_wrap()
-	$Thruster.emitting = false   # default off every frame
-
-
+	$Thruster.emitting = false
 
 func apply_thrust(delta):
 	var forward = Vector2.RIGHT.rotated(rotation)
@@ -38,10 +40,14 @@ func try_fire():
 	if can_fire:
 		fire()
 
+func try_fire_missile():
+	if can_fire_missile:
+		fire_missile()
+
 func fire():
 	if projectile_scene == null:
 		return
-	$gun2sound.play()   # ← NEW LINE
+	$gun2sound.play()
 	can_fire = false
 	var projectile = projectile_scene.instantiate()
 	projectile.damage = shot_damage
@@ -51,8 +57,24 @@ func fire():
 	get_tree().current_scene.add_child(projectile)
 	$FireCooldownTimer.start()
 
+func fire_missile():
+	if missile_scene == null:
+		return
+	can_fire_missile = false
+	var missile = missile_scene.instantiate()
+	missile.shooter = self
+	var forward = Vector2.RIGHT.rotated(rotation)
+	missile.global_position = global_position + forward * 30
+	missile.rotation = rotation
+	get_tree().current_scene.add_child(missile)
+	$MissileCooldownTimer.wait_time = missile.missile_cooldown
+	$MissileCooldownTimer.start()
+
 func _on_fire_cooldown_timeout():
 	can_fire = true
+
+func _on_missile_cooldown_timeout():
+	can_fire_missile = true
 
 func apply_drag():
 	velocity *= drag
@@ -72,19 +94,18 @@ func handle_screen_wrap():
 	elif position.y < 0:
 		position.y = screen_size.y
 
-
-
 func _on_died() -> void:
 	$ExplosionSound.play()
 	respawn_timer.start()
 	visible = false
-	set_physics_process(false)  # stop thrust/rotation while dead
-	# Next step: 2-3s delay + respawn at center
+	set_physics_process(false)
+
 func _on_respawn_timer_timeout() -> void:
 	var screen_size = get_viewport_rect().size
 	position = screen_size / 2
 	rotation = 0.0
 	velocity = Vector2.ZERO
-	health_component.current_health = health_component.max_health
+	health_component.reset()
 	visible = true
 	set_physics_process(true)
+	can_fire_missile = true
