@@ -23,6 +23,7 @@ enum Difficulty {
 
 var ship: CharacterBody2D = null
 var ai_fire_cooldown := 0.0
+var ai_missile_cooldown := 0.0
 var decision_timer := 0.0
 var desired_turn_sign := 0.0
 var desired_thrust := false
@@ -53,6 +54,8 @@ func _physics_process(delta):
 		
 		# Cooldown always counts down in real time
 		ai_fire_cooldown -= delta
+		ai_missile_cooldown -= delta
+		
 		
 		# Decision tick: only update intent at intervals
 		decision_timer -= delta
@@ -124,6 +127,9 @@ func _physics_process(delta):
 				if not hesitate:
 					ship.try_fire()
 					ai_fire_cooldown = cfg.fire_cooldown
+				if ai_missile_cooldown <= 0.0 and abs_angle < cfg.fire_aim_tolerance * 2.0:
+					ship.try_fire_missile()
+					ai_missile_cooldown = 2.5
 		
 		# Execute stored decisions each frame
 		if desired_turn_sign > 0.0:

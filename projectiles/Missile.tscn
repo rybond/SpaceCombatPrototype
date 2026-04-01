@@ -4,8 +4,9 @@
 
 [node name="Missile" type="Area2D" unique_id=1453255547]
 script = ExtResource("1_2p5fu")
-launch_speed = 80.0
-acceleration = 4.0
+launch_speed = 800.0
+acceleration = 1000.0
+metadata/_edit_horizontal_guides_ = [-25.0, 18.0, -20.0, 0.0, 0.0, 0.0, 1314.0]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=243798078]
 polygon = PackedVector2Array(12, 0, -6, -5, -3, 0, -6, 5)
